@@ -8,8 +8,8 @@ app.config.update(
     MAIL_SERVER='smtp.qq.com',
     MAIL_PORT=465,
     MAIL_USE_SSL=True,
-    MAIL_USERNAME = '1113713599',
-    MAIL_PASSWORD = 'cgh12362202687,.'
+    MAIL_USERNAME = 'qqid',
+    MAIL_PASSWORD = 'password'
     )
 
 mail = Mail(app)
