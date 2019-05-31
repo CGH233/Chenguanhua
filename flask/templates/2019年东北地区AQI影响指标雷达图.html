@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+// Schema:
+// date,AQIindex,PM2.5,PM10,CO,NO2,SO2
+var dataBJ = [
+[	26	,	69	,	11	,	0.583	,	30	]	,
+[	36	,	108	,	13	,	0.61	,	28	]	,
+[	54	,	94	,	19	,	0.887	,	38	]	,
+[	106	,	119	,	30	,	1.075	,	41	]	,
+[	75	,	106	,	35	,	1.219	,	44	]	,
+
+];
+
+var dataGZ = [
+[	29	,	78	,	6	,	0.608	,	31	]	,
+[	33	,	94	,	7	,	0.597	,	32	]	,
+[	54	,	96	,	14	,	0.803	,	38	]	,
+[	80	,	94	,	23	,	0.982	,	39	]	,
+[	63	,	92	,	23	,	1.071	,	41	]	,
+
+];
+
+var dataSH = [
+[	44	,	104	,	23	,	0.842	,	30	]	,
+[	40	,	105	,	20	,	0.733	,	34	]	,
+[	61	,	109	,	25	,	0.955	,	42	]	,
+[	71	,	102	,	31	,	1.164	,	44	]	,
+[	70	,	116	,	32	,	1.355	,	49	]	,
+
+];
+
+var lineStyle = {
+    normal: {
+        width: 1,
+        opacity: 0.5
+    }
+};
+
+option = {
+    backgroundColor: '#161627',
+    title: {
+        text: '',
+        left: 'center',
+        textStyle: {
+            color: '#eee'
+        }
+    },
+    legend: {
+        bottom: 5,
+        data: ['哈尔滨', '长春', '沈阳'],
+        itemGap: 20,
+        textStyle: {
+            color: '#fff',
+            fontSize: 14
+        },
+        selectedMode: 'single'
+    },
+    // visualMap: {
+    //     show: true,
+    //     min: 0,
+    //     max: 20,
+    //     dimension: 6,
+    //     inRange: {
+    //         colorLightness: [0.5, 0.8]
+    //     }
+    // },
+    radar: {
+        indicator: [
+            {name: 'PM2.5', max: 75},
+            {name: 'PM10', max: 150},
+            {name: 'SO2', max: 80},
+            {name: 'CO', max: 1.5},
+             {name: 'NO2', max: 80},
+        ],
+        shape: 'circle',
+        splitNumber: 5,
+        name: {
+            textStyle: {
+                color: 'rgb(238, 197, 102)'
+            }
+        },
+        splitLine: {
+            lineStyle: {
+                color: [
+                    'rgba(238, 197, 102, 0.1)', 'rgba(238, 197, 102, 0.2)',
+                    'rgba(238, 197, 102, 0.4)', 'rgba(238, 197, 102, 0.6)',
+                    'rgba(238, 197, 102, 0.8)', 'rgba(238, 197, 102, 1)'
+                ].reverse()
+            }
+        },
+        splitArea: {
+            show: false
+        },
+        axisLine: {
+            lineStyle: {
+                color: 'rgba(238, 197, 102, 0.5)'
+            }
+        }
+    },
+    series: [
+        {
+            name: '哈尔滨',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataBJ,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: '#F9713C'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.1
+                }
+            }
+        },
+        {
+            name: '长春',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataSH,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: '#B3E4A1'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.05
+                }
+            }
+        },
+        {
+            name: '沈阳',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataGZ,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: 'rgb(238, 197, 102)'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.05
+                }
+            }
+        }
+    ]
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

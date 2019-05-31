@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+// Schema:
+// date,AQIindex,PM2.5,PM10,CO,NO2,SO2
+var dataSH = [
+[	31	,	52	,	6	,	0.758	,	36	]	,
+[	30	,	52	,	8	,	0.783	,	39	]	,
+[	46	,	71	,	9	,	0.806	,	46	]	,
+[	48	,	65	,	9	,	0.9	,	31	]	,
+[	74	,	102	,	9	,	1.135	,	47	]	,
+
+];
+
+var dataNJ = [
+[	30	,	46	,	6	,	0.775	,	31	]	,
+[	40	,	70	,	8	,	0.817	,	44	]	,
+[	44	,	78	,	7	,	0.797	,	51	]	,
+[	56	,	81	,	6	,	0.932	,	38	]	,
+[	78	,	115	,	8	,	1.123	,	55	]	,
+
+];
+
+var dataHZ = [
+[	22	,	42	,	6	,	0.567	,	20	]	,
+[	29	,	52	,	7	,	0.62	,	21	]	,
+[	36	,	60	,	14	,	0.645	,	25	]	,
+[	24	,	37	,	11	,	0.714	,	15	]	,
+[	34	,	51	,	16	,	0.929	,	24	]	,
+
+];
+var dataHF = [
+[	32	,	64	,	12	,	0.585	,	27	]	,
+[	40	,	65	,	14	,	0.723	,	35	]	,
+[	36	,	61	,	14	,	0.735	,	34	]	,
+[	26	,	42	,	14	,	0.725	,	25	]	,
+[	23	,	43	,	13	,	1	,	35	]	,
+
+];
+var dataFZ = [
+[	15	,	39	,	5	,	0.375	,	11	]	,
+[	11	,	34	,	5	,	0.433	,	15	]	,
+[	14	,	37	,	4	,	0.487	,	15	]	,
+[	11	,	34	,	5	,	0.586	,	13	]	,
+[	14	,	34	,	6	,	0.671	,	21	]	,
+
+];
+
+var lineStyle = {
+    normal: {
+        width: 1,
+        opacity: 0.5
+    }
+};
+
+option = {
+    backgroundColor: '#161627',
+    title: {
+        text: '2019年西南地区AQI影响指标雷达图',
+        left: 'center',
+        textStyle: {
+            color: '#eee'
+        }
+    },
+    legend: {
+        bottom: 5,
+        data: ['重庆', '成都', '贵阳','昆明','拉萨'],
+        itemGap: 20,
+        textStyle: {
+            color: '#fff',
+            fontSize: 14
+        },
+        selectedMode: 'single'
+    },
+    // visualMap: {
+    //     show: true,
+    //     min: 0,
+    //     max: 20,
+    //     dimension: 6,
+    //     inRange: {
+    //         colorLightness: [0.5, 0.8]
+    //     }
+    // },
+    radar: {
+        indicator: [
+            {name: 'PM2.5', max: 75},
+            {name: 'PM10', max: 150},
+            {name: 'SO2', max: 80},
+            {name: 'CO', max: 1.5},
+             {name: 'NO2', max: 80},
+        ],
+        shape: 'circle',
+        splitNumber: 5,
+        name: {
+            textStyle: {
+                color: 'rgb(238, 197, 102)'
+            }
+        },
+        splitLine: {
+            lineStyle: {
+                color: [
+                    'rgba(238, 197, 102, 0.1)', 'rgba(238, 197, 102, 0.2)',
+                    'rgba(238, 197, 102, 0.4)', 'rgba(238, 197, 102, 0.6)',
+                    'rgba(238, 197, 102, 0.8)', 'rgba(238, 197, 102, 1)'
+                ].reverse()
+            }
+        },
+        splitArea: {
+            show: false
+        },
+        axisLine: {
+            lineStyle: {
+                color: 'rgba(238, 197, 102, 0.5)'
+            }
+        }
+    },
+    series: [
+        {
+            name: '重庆',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataSH,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: '#F9713C'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.1
+                }
+            }
+        },
+        {
+            name: '成都',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataNJ,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: '#B3E4A1'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.05
+                }
+            }
+        },
+        {
+            name: '贵阳',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataHZ,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: 'rgb(238, 197, 102)'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.05
+                }
+            }
+        },
+        {
+            name: '昆明',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataHF,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: '#B3E4A1'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.05
+                }
+            }
+        },
+        {
+            name: '拉萨',
+            type: 'radar',
+            lineStyle: lineStyle,
+            data: dataFZ,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    color: '#B3E4A1'
+                }
+            },
+            areaStyle: {
+                normal: {
+                    opacity: 0.05
+                }
+            }
+        },
+    ]
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
